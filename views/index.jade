@@ -1,0 +1,88 @@
+extends layout
+
+block mainContent
+
+    div(class="navbar navbar-inverse navbar-fixed-top")
+        div(class="navbar-inner")
+            div(class="container-fluid")
+                a(class="brand", href="/")
+                    =title
+                div(class="nav-collapse,collapse")
+                    p(class="navbar-text pull-right", id="userid")
+                        span Welcome Unknown User
+                        | &nbsp;
+                        input(type="image",src="/images/edit_pencil.gif",id="set-name")
+                        | &nbsp;&nbsp;&nbsp;
+                        input(type="image",src="/images/logout.gif",id="logout")
+                    ul(class="nav")
+                        li(class="active")
+                            a(href="/",data-nav-page="home") Home
+                        li
+                            a(href="/",data-nav-page="mazes") Mazes
+                        li
+                            a(href="/",data-nav-page="create-maze") Create a Maze
+
+    div(class="container-fluid page hidden", data-page="home")
+        div(class="row-fluid")
+            div(class="span12")
+                h2 Welcome
+                p
+                    |Behold the mighty maze game!
+
+    div(class="container-fluid page hidden", data-page="create-maze")
+        div(class="row-fluid")
+            div(class="span12")
+                h2 Create a new maze
+                p
+                    | This form will let you create a new maze.  Once created, your maze will be online and available so that
+                    | others may join.
+                br
+                form(id="maze_config_form")
+                    p   What is the name of your maze?
+                        br
+                        input(type="text", placeholder="Give your maze a name", name="name")
+                    p   Width of the maze (10-75)
+                        br
+                        input(type="text", placeholder="Width of maze (10-75)", name="x", value="40")
+                    p   Height of the maze (10-75)
+                        br
+                        input(type="text", placeholder="Height of maze (10-75)", name="y", value="30")
+                    p   Block Width (20-50)
+                        br
+                        input(type="text", placeholder="Block width (20-50)", name="bs", value="20")
+                    p.buttons
+                        input(type="submit", id="create", value="Start your Maze!")
+
+    div(class="container-fluid page hidden", data-page="mazes")
+        div(class="row-fluid")
+            div(class="span12")
+                h2 Mazes
+                p If any mazes are currently in progress, you will see them listed here
+                div(id="maze-list")
+
+
+    div(class="container-fluid page hidden", data-page="maze")
+        div(class="row-fluid")
+            div(class="span3")
+                h2 Players
+                div(class="instructions")
+                div(class="players-list")
+                br
+                div
+                    button(id="start") Start Game
+                    br
+                    button(id="new-maze") Load New Maze
+
+            div(class="span9")
+                div(id="maze-game")
+                    h2 Maze
+                    div(id="canvas-wrap", class="in-room")
+                        canvas(id="myCanvas")
+                div(id="maze-chat")
+                    h2 Chat
+                    p
+                        |Chat with your competitors before the game starts...
+                    label(for="comment") Comment:
+                    input(id="comment")
+                    h4 Chat Log
+                    textarea(id="comments")
