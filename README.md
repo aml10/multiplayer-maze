@@ -13,9 +13,52 @@ This project is provided on behalf of the Cleveland JavaScript and Node.js meetu
 
 ## Installation
 
-First, make sure you have the latest version of Node installed.  Clone the source from github and then run 'npm install' within the project directory.  This will pull down all of the project node requirements.
+1.  Get a copy of the Multiplayer-Maze source code onto your computer.  There are two ways to do this.  The first is use Git to clone the
+source from GitHub.  Or, if you don't have Git set up, you can navigate to https://github.com/uzquiano/multiplayer-maze and click the ZIP
+button to download a ZIP file to your computer.  Make sure to expand the ZIP file to someplace where you're going to work.
 
-Then, run 'node app' to run the server.
+2.  Make sure you have the latest version of Node installed.  You can download Node from http://www.nodejs.org.  Simply grab the latest
+distribution and install it onto your computer.
+
+3.  Open a Terminal (or Command Prompt in Windows).  Go to the directory where your source files are and run: 'npm install'
+
+4.  Wait for a little bit while Node downloads all of the dependencies for the project.
+
+5.  Run 'node app' to launch the application.  It will start up and you can access it at http://localhost:8888/
+
+## Tutorial
+
+The tutorial consists of 8 problems that span using Socket.IO both within the browser and in the Node.js server.  The full Multiplayer
+Maze application makes pretty good use of Socket.IO but a few interesting places have been identified and their code has been separated
+out into Worksheet files and solutions that students can play with.
+
+The worksheet files are located at:
+
+    - '/public/tutorial/worksheet1.js'
+    - '/public/tutorial/worksheet2.js'
+
+And the solutions are right alongside them at:
+
+    - '/public/tutorial/worksheet1-solution.js'
+    - '/public/tutorial/worksheet2-solution.js'
+
+The 'worksheet1.js' file contains Socket.IO and DOM manipulation code that runs in the browser whereas
+'worksheet2.js' contains Socket.IO code that runs within the Node.js server.  These files are picked up automatically
+when the server starts.
+
+The 'worksheet1.js' and 'worksheet2.js' files are incomplete in the sense that it is left as an exercise for the
+student to fill in the missing Socket.IO logic for things to work properly.  Each file contains comments that
+describe what is expected for each step.  Students should begin with Worksheet #1.
+
+Students are free to look at the solutions should they get stuck but are encouraged to write their own logic and come
+up with their own solutions.  As always, there is no correct solution -- the provided solutions are intended to
+provide a guide and they can often be improved upon.
+
+If you would like to run the application with the provided solutions, you can switch worksheets in main.js (for the
+browser) and app.js (for the node.js server).  Switching to the *-solution.js worksheets will bring everything into
+full working order.
+
+
 
 ## Instructions
 
