@@ -2,6 +2,9 @@
  * Module dependencies.
  */
 
+//var Worksheet = require("./public/tutorial/worksheet2-solution");
+var Worksheet = require("./public/tutorial/worksheet2");
+
 var express = require('express');
 var routes = require('./routes');
 var RoomManager = require('./routes/roomManager').RoomManager;
@@ -67,26 +70,7 @@ io.sockets.on('connection', function(socket) {
      *
      * Responds by raising a "player-confirmation" signal.
      */
-    socket.on('set-player', function(data) {
-
-        var config = {
-            'socket': socket
-        };
-        if (data.name) {
-            config.name = data.name;
-        }
-
-        var player = new Player(config);
-
-        console.log("A new player has connected to the maze server!");
-        console.log("Data -> " + data + ", socket id: " + socket.id);
-        console.log("Player -> name: " + player.name + ", id: " + player.id);
-
-        // store "player" object in session
-        socket.set('player', player, function() {
-            socket.emit('player-confirmation', {id:player.id,name:player.name});
-        });
-    });
+    Worksheet.setupHandleSetPlayer(socket);
 
     /**
      * When a browser decides to rename a player, it signals "set-player-name" to allow the maze server to
@@ -106,6 +90,14 @@ io.sockets.on('connection', function(socket) {
 
                 console.log("Player: " + oldname + " updated their name to: " + newname);
                 player.name = newname;
+
+                // find any rooms where admin == the old name and update
+                for (var i = 0; i < rooms.length; i++)
+                {
+                    if (rooms[i].admin === oldname) {
+                        rooms[i].admin = newname;
+                    }
+                }
 
                 io.sockets.in(room.name).emit("set-player-name-update", {
                     "oldname": oldname,
@@ -175,7 +167,8 @@ io.sockets.on('connection', function(socket) {
             y: room.y,
             bs: room.bs,
             wallObj:room.maze.walls,
-            players:room.players
+            players:room.players,
+            admin: room.admin
         });
 
         // broadcast "current-rooms" to all clients
@@ -234,7 +227,8 @@ io.sockets.on('connection', function(socket) {
                 offset: 20,
                 wallObj: room.maze.walls,
                 players: room.players,
-                playing: room.playing
+                playing: room.playing,
+                admin: room.admin
             };
             socket.set('room', room, function() {
                 socket.emit('room-joined', response);
@@ -316,22 +310,7 @@ io.sockets.on('connection', function(socket) {
      * Signaled when a comment is submitted by one of the players in a room.
      * If approved, the comment is distributed to everyone else in the room.
      */
-    socket.on("submit-comment", function(data) {
-
-        var playerId = data.player;
-
-        socket.get("room", function(err, room) {
-
-            socket.get("player", function(err, player) {
-
-                io.sockets.in(room.name).emit("announce-comment", {
-                    player: player.name,
-                    comment: data.comment
-                })
-
-            });
-        });
-    });
+    Worksheet.setupHandleSubmitContent(io, socket);
 
     /**
      * When a user disconnects (such as closing their browser), we remove them from the room they were in.

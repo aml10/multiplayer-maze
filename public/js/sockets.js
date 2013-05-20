@@ -1,4 +1,4 @@
-define(["app/game", "socket.io"], function(Game, io) {
+define(["app/game", "socket.io", "worksheet"], function(Game, io, Worksheet) {
 
     WEB_SOCKET_SWF_LOCATION = "/vendor/socket.io";
 
@@ -8,8 +8,8 @@ define(["app/game", "socket.io"], function(Game, io) {
      * Signaled after a "set-player" call upon initialization.
      * Hands back the player object to be used by the client.
      */
-    socket.on('player-confirmation', function(player) {
-        Game.player(player);
+    Worksheet.setupPlayerConfirmationListener(socket, function(data) {
+        Game.player(data); // player = data
     });
 
 
@@ -19,13 +19,9 @@ define(["app/game", "socket.io"], function(Game, io) {
      *
      * This method updates the "rooms" page to show all of the available mazes to play.
      */
-    socket.on('current-rooms', function(data) {
-        //console.log('current-rooms fired: '+data.current_rooms);
+    Worksheet.setupCurrentRoomsListener(socket, function(data, count) {
 
-        var count = 0;
-        for (var rm in data.current_rooms) {
-            count++;
-        }
+        //console.log('current-rooms fired: '+data.current_rooms);
 
         if (count > 0)
         {
@@ -62,9 +58,7 @@ define(["app/game", "socket.io"], function(Game, io) {
             var div = $('#maze-list');
             $(div).html("<B>There are no games currently online</B>");
         }
-
     });
-
 
     socket.on('room-created', function(data) {
 
@@ -86,7 +80,7 @@ define(["app/game", "socket.io"], function(Game, io) {
             Game.changePage("maze");
 
             Game.drawMaze(data, Game.toMazeOn);
-            Game.updateRoomHTML(data.name);
+            Game.updateRoomHTML(data);
             Game.updatePlayersHTML(data.players);
             var room = data;
             room.bs = parseInt(data.bs, 10);
@@ -133,7 +127,7 @@ define(["app/game", "socket.io"], function(Game, io) {
         var room = data;
         room.playing = false;
         Game.updatePlayersHTML(data.players);
-        Game.updateRoomHTML(data.name);
+        Game.updateRoomHTML(data);
 
         Game.room(room);
     });
@@ -237,15 +231,7 @@ define(["app/game", "socket.io"], function(Game, io) {
     });
 
 
-    socket.on("announce-comment", function(data) {
-        //console.log("comment announced: " + data.comment);
-
-        var val = $("#comments").val();
-        val += "[" + data.player + "] " + data.comment;
-        val += "\r\n";
-
-        $("#comments").val(val);
-    });
+    Worksheet.setupAnnounceCommentListener(socket, $("#comments"));
 
     socket.on("set-player-name-update", function(data) {
 
@@ -270,12 +256,7 @@ define(["app/game", "socket.io"], function(Game, io) {
 
     var init = r.init = function(name)
     {
-        // start things off by telling the server who we are
-        // also get a list of all available rooms
-        socket.emit('set-player', {
-            "name": name
-        });
-        socket.emit('get-rooms', {});
+        return Worksheet.initializeGame(socket, name);
     };
 
     r.socket = socket;

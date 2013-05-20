@@ -1,4 +1,11 @@
-define(["jquery", "bootstrap", "app/game", "app/sockets"], function($, bootstrap, Game, Sockets) {
+define([
+    "jquery",
+    "bootstrap",
+    "app/game",
+    "app/sockets",
+    "worksheet"
+],
+    function($, bootstrap, Game, Sockets, Worksheet) {
 
     var socket = Sockets.socket;
 
@@ -97,27 +104,7 @@ define(["jquery", "bootstrap", "app/game", "app/sockets"], function($, bootstrap
      * When they click ENTER on the text input, we send the comment over to the server and have it relay to all
      * players in the room.
      */
-    $("#comment").keypress(function(e) {
-
-        if (e.keyCode == 13)
-        {
-            var player = Game.player();
-
-            var comment = $(this).val();
-            if (comment)
-            {
-                socket.emit("submit-comment", {
-                    "id": player.id,
-                    "comment": comment
-                });
-
-                // clear our text box
-                $("#comment").val("");
-
-                e.preventDefault();
-            }
-        }
-    });
+    Worksheet.setupCommentSubmitHandler(socket, $("#comment"));
 
     $("#set-name").click(function(e) {
         e.preventDefault();

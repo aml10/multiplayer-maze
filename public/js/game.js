@@ -3,7 +3,6 @@ define([
 ],
     function(DrawMaze)
     {
-        //var canvas = document.getElementById("myCanvas");
         var canvas = DrawMaze.getCanvas();
 
         var r = {};
@@ -42,9 +41,8 @@ define([
 
         r.updateRoomHTML = function (room) {
             //console.log('updateRoomHTML with: '+room);
-            $('#current-room').text('You are in '+room);
+            $('#current-room').text('You are in '+room.name);
 
-            /*
             // disable the "start" button
             $("#start").prop("disabled", true);
 
@@ -54,7 +52,6 @@ define([
             {
                 $("#start").prop("disabled", false);
             }
-            */
         };
 
         var updateUserNameHTML = r.updateUserNameHTML = function (name) {
@@ -80,58 +77,20 @@ define([
         };
 
         r.toMazeOn = function () {
-            $('#main-input').removeClass('lobby')
-                .addClass('maze-on fix-padding');
-            $('.header-main-input').css('display', 'none');
-            $('.in-lobby').addClass('hidden');
-            $('.in-room').removeClass('hidden');
-            $('#to-lobby').removeClass('hidden');
-            $('.header-main-input h3').removeClass('current-header');
-            $('#room-list').addClass('hidden');
-            $('#maze_form').addClass('hidden');
             $('#new-maze').addClass('hidden');
-            $('#player-list').removeClass('hidden');
-            $('#ajax-loader').addClass('hidden');
         };
 
         r.toLobby = function () {
-            $('#main-input').addClass('lobby')
-                .removeClass('maze-on fix-padding');
-            $('.header-main-input').css('display', 'block');
-            $('#to-lobby').addClass('hidden');
-            $('.in-lobby').removeClass('hidden');
-            $('.in-room').addClass('hidden');
-            $('#header-maze_form').addClass('current-header');
-            $('#room-list').addClass('hidden');
-            $('#maze_form').removeClass('hidden');
-            $('#new-maze').addClass('hidden');
             $('#start').addClass('hidden');
-            $('#player-list').addClass('hidden');
-            $('#current-room').text('');
-            /*
-            $('#canvasCover').css('width', 0 + "px")
-                .css('height', 0 + "px");
-                */
-            canvas.width = canvas.width;//addClass('hidden');
+            $('#new-maze').addClass('hidden');
         };
 
         r.drawMaze = function (data, callback) {
             var width = data.x * data.bs + 40
                 , height = data.y * data.bs + 44;
-            /*
-            $('#canvas-wrap').attr('width', width + "px")
-                .attr('height', height + "px");
-                */
             $('#myCanvas').attr('width', width + "px")
                 .attr('height', height + "px")
                 .show();
-            /*
-            $('#canvasCover').css('width', (width - 40) + "px")
-                .css('height', (height - 40) + "px")
-                .show();
-            $('#start').removeClass('hidden')
-                .css({'position': 'absolute', 'top':height/2-20,'left':width/2-20});
-                */
             data.offset = 20;
             var context = canvas.getContext("2d");
             var ctxGrid = canvas.getContext("2d");
@@ -307,6 +266,9 @@ define([
                         if (thePlayer)
                         {
                             thePlayer.name = name;
+                            if (window.sessionStorage) {
+                                window.sessionStorage.setItem("username", name);
+                            }
                         }
 
                         if (callback)
