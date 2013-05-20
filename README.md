@@ -1,8 +1,15 @@
+# Multiplayer Maze
+
 This project provides a multiplayer maze game which is suitable for teaching Node.js, Express and particularly, socket.io, within a group setting.  These project files are provided so that others might utilize them for educational purposes.
 
 This project is derived from Steven Ciraolo's multiplayer maze game (https://github.com/cirsteve/MultiMaze) and much credit goes to him.  It builds on top of his work by providing a few enhancements including a multiplayer chat, a Twitter Bootstrap UI, support for RequireJS and modularization of the code base.
 
 Check out more good stuff from Steven at http://monkeyslikefunk.com.
+
+This project is provided on behalf of the Cleveland JavaScript and Node.js meetup groups:
+
+ - http://www.meetup.com/Cleveland-JavaScript-Meetup/
+ - http://www.meetup.com/NodejsCleveland/
 
 ## Installation
 
