@@ -69,3 +69,9 @@ You will be asked for a user name right away.  This app doesn't tackle authentic
 Give your maze a unique name and then click "Start my Maze!".  Your maze will be created and you'll be taken into a maze waiting room.  In this room, you can wait for other players to arrive.  For example, you might wait until 8 players arrive before you elect to Start your Game.  While you're waiting, you can chat with other players in the waiting area.
 
 Once you have your players, click on "Start your Game".  You'll now be taken to a view of your maze.  Each of the players will have a colored dot associated with them.  Use the arrow keys to move your dot through the maze.
+
+
+## Resources
+
+- Powerpoint Slides from Cleveland JS Meetup:
+    - http://files.meetup.com/2113471/Cleveland%20JS%20Meetup%20-%20May%202013.pdf
